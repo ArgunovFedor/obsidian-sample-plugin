@@ -1,0 +1,1 @@
+scp -r main.js ./my-plugin/my-plugin/.obsidian/plugins/my-plugin-id
