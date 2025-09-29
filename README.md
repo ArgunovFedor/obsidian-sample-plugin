@@ -1,75 +1,70 @@
-# Obsidian Sample Plugin
+# Пример плагина для Obsidian
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Это пример плагина для Obsidian (https://obsidian.md).
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+В этом проекте используется TypeScript для обеспечения проверки типов и документации.
+Репозиторий зависит от последней версии API плагинов (obsidian.d.ts) в формате определений TypeScript, который содержит комментарии TSDoc с описанием функциональности.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+Данный пример плагина демонстрирует некоторую базовую функциональность, которую может предоставить API плагинов:
+- Добавляет значок на ленту, который при нажатии показывает уведомление.
+- Добавляет команду «Open Sample Modal», которая открывает модальное окно.
+- Добавляет вкладку настроек плагина на страницу параметров.
+- Регистрирует глобальное событие клика и выводит «click» в консоль.
+- Регистрирует глобальный интервал, который записывает «setInterval» в консоль.
 
-## First time developing plugins?
+## Впервые разрабатываете плагины?
 
-Quick starting guide for new plugin devs:
+Краткое руководство для новых разработчиков плагинов:
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+- Проверьте, [не создал ли кто-то уже плагин для вашей цели](https://obsidian.md/plugins)! Возможно, существует достаточно похожий плагин, с автором которого можно сотрудничать.
+- Сделайте копию этого репозитория в качестве шаблона, нажав кнопку «Use this template» (войдите в GitHub, если не видите её).
+- Клонируйте ваш репозиторий в локальную папку для разработки. Для удобства эту папку можно разместить в `.obsidian/plugins/your-plugin-name`.
+- Установите NodeJS, затем выполните `npm i` в командной строке в папке вашего репозитория.
+- Выполните `npm run dev`, чтобы скомпилировать ваш плагин из `main.ts` в `main.js`.
+- Вносите изменения в `main.ts` (или создавайте новые файлы `.ts`). Эти изменения должны автоматически компилироваться в `main.js`.
+- Перезагрузите Obsidian, чтобы загрузить новую версию вашего плагина.
+- Включите плагин в окне настроек.
+- Для обновлени
+- я API Obsidian выполните `npm update` в командной строке в папке вашего репозитория.
 
-## Releasing new releases
+## Публикация новых релизов
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+- Обновите ваш `manifest.json`, указав новый номер версии (например, `1.0.1`) и минимальную требуемую версию Obsidian для вашего последнего релиза.
+- Обновите ваш файл `versions.json`, добавив `"новая-версия-плагина": "минимальная-версия-obsidian"`, чтобы старые версии Obsidian могли скачать совместимую старую версию вашего плагина.
+- Создайте новый релиз на GitHub, используя новый номер версии в качестве «Tag version». Используйте точный номер версии без префикса `v`. Пример: https://github.com/obsidianmd/obsidian-sample-plugin/releases
+- Загрузите файлы `manifest.json`, `main.js`, `styles.css` как бинарные вложения. Примечание: Файл manifest.json должен быть в двух местах — в корневом пути вашего репозитория и также в составе релиза.
+- Опубликуйте релиз.
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+> Вы можете упростить процесс обновления версии, выполнив `npm version patch`, `npm version minor` или `npm version major` после ручного обновления `minAppVersion` в `manifest.json`.
+> Команда увеличит версию в `manifest.json` и `package.json` и добавит запись для новой версии в `versions.json`.
 
-## Adding your plugin to the community plugin list
+## Добавление вашего плагина в список сообщества
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+- Ознакомьтесь с [рекомендациями для плагинов](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
+- Опубликуйте первоначальную версию.
+- Убедитесь, что в корне вашего репозитория есть файл `README.md`.
+- Создайте pull-request в https://github.com/obsidianmd/obsidian-releases, чтобы добавить ваш плагин.
 
-## How to use
+## Ручная установка плагина
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+- Скопируйте `main.js`, `styles.css`, `manifest.json` в папку вашего хранилища `VaultFolder/.obsidian/plugins/your-plugin-id/`.
 
-## Manually installing the plugin
+## Улучшение качества кода с помощью eslint (опционально)
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+- [ESLint](https://eslint.org/) — это инструмент для анализа кода, который помогает быстро находить проблемы. Вы можете запустить ESLint для вашего плагина, чтобы найти распространённые ошибки и способы улучшения кода.
+- Чтобы использовать eslint с этим проектом, установите его глобально из терминала:
+	- `npm install -g eslint`
+- Чтобы проанализировать проект с помощью eslint, используйте команду:
+	- `eslint main.ts`
+	- eslint создаст отчёт с предложениями по улучшению кода с указанием файла и номера строки.
+- Если ваш исходный код находится в папке, например, `src`, вы можете использовать eslint для анализа всех файлов в этой папке:
+	- `eslint ./src/`
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint ./src/`
+## URL финансирования
 
-## Funding URL
+Вы можете указать URL, по которым пользователи вашего плагина могут финансово поддержать его.
 
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+Простой способ — установить поле `fundingUrl` в вашу ссылку в файле `manifest.json`:
 
 ```json
 {
@@ -77,18 +72,18 @@ The simple way is to set the `fundingUrl` field to your link in your `manifest.j
 }
 ```
 
-If you have multiple URLs, you can also do:
+## Как использовать
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+- Клонируйте этот репозиторий.
+- Убедитесь, что у вас установлен NodeJS не ниже версии v16 (`node --version`).
+- Выполните `npm i` или `yarn` для установки зависимостей.
+- Выполните `npm run dev` для начала компиляции в режиме наблюдения.
+```bash
+	./copy-file.bat
 ```
+- открыть my-plugin через obsidian
+- [my-plugin](obsidian://open?vault=my-plugin)
 
-## API Documentation
 
-See https://github.com/obsidianmd/obsidian-api
+## Учеба
+- [Хабр статья](https://habr.com/ru/articles/861230/)
