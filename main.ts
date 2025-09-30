@@ -1,45 +1,91 @@
+import {Notice} from "obsidian";
+
 var obsidian = require('obsidian')
+class ResultModal extends obsidian.Modal {
+	constructor(app, todo) {
+		super(app)
 
-class GuitarTabsViewerPlugin extends obsidian.Plugin {
-	async onload() {
-		console.log('Guitar Tabs Viewer plugin loaded');
+		this.setTitle('Your TODO')
+		this.setContent(todo)
 
-		this.registerMarkdownPostProcessor((element, context) => {
-			// Ищем блоки кода внутри pre элементов (стандартная структура Markdown)
-			const codeBlocks = element.querySelectorAll('pre > code');
-
-			codeBlocks.forEach((codeblock) => {
-				const className = codeblock.className;
-				if (!className) return;
-
-				// Проверяем классы
-				if (className.includes('language-tab') || className.includes('language-tabs')) {
-					this.processTabContent(codeblock);
-				}
-			});
-		});
-	}
-
-	processTabContent(codeblock) {
-		const targetSymbol = '·';
-
-		// Работаем с текстовым содержимым, а не innerHTML
-		const originalText = codeblock.textContent;
-		if (!originalText) return;
-
-		const processedText = originalText
-			.replaceAll('-', targetSymbol)
-			.replaceAll('–', targetSymbol)
-			.replaceAll('—', targetSymbol)
-			.replaceAll('─', targetSymbol)
-			.replaceAll('‒', targetSymbol);
-
-		// Устанавливаем обработанный текст
-		codeblock.textContent = processedText;
-	}
-
-	onunload() {
-		console.log('Guitar Tabs Viewer plugin unloaded');
+		new obsidian.Setting(this.contentEl)
+			.addButton((btn) =>
+				btn
+					.setButtonText('OK')
+					.setCta()
+					.onClick(() => {
+						this.close()
+					})
+			)
 	}
 }
-module.exports = GuitarTabsViewerPlugin
+function removePrefix(str, prefix) {
+	if (str.startsWith(prefix)) {
+		return str.substring(prefix.length);
+	}
+	return str;
+}
+class TodoSuggestPlugin extends obsidian.Plugin {
+	async onload() {
+		this.addCommand({
+			id: 'Suggest-random-todo',
+			name: 'Suggest random TODO',
+			callback: () => {this.suggestTodo()}
+		})
+
+		this.addRibbonIcon('dice', 'Suggest random TODO', (evt) => {
+			this.suggestTodo()
+		})
+	}
+	
+	async suggestTodo() {
+		function suggestTodoImpl(markdown) {
+			const todos = markdown.split("\n")
+				.filter(line => {
+					if (line.startsWith('- [x]') || line.startsWith('* [x]')) return false
+					return line.startsWith('- ') || line.startsWith('- [ ]') || line.startsWith('* ') || line.startsWith('* [ ]')
+				})
+				.map(line => removePrefix(removePrefix(line, '- [ ]'), '- ')).map(line => removePrefix(removePrefix(line, '* [ ]'), '* ').trim())
+
+			if (todos.length === 0) {
+				return null
+			}
+
+			const randomLine = todos[Math.floor(Math.random() * todos.length)]
+			return randomLine
+		}
+		
+		const activeView = this.app.workspace.getActiveViewOfType(obsidian.MarkdownView)
+		if (!activeView) {
+			new Notice("No active note found!")
+			return
+		}
+
+		let content
+		if (activeView.getMode() === "source") {
+			// Editor mode: Get content from the editor
+			const editor = activeView.editor
+			content = editor.getValue()
+		} else if (activeView.getMode() === "preview") {
+			// Reading mode: Read content from the file
+			const file = activeView.file
+			content = await this.app.vault.read(file)
+		}
+
+		if (!content) {
+			new Notice("Could not read content!")
+			return
+		}
+		
+		const todo = suggestTodoImpl(content)
+
+		if (!todo) {
+			new Notice("No TODOs available!")
+			return
+		}
+
+		new ResultModal(this.app, todo).open()
+	}
+}
+
+module.exports = TodoSuggestPlugin
